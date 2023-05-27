@@ -86,7 +86,7 @@ extension StatisticServiceImplementation: StatisticService {
             return bestGame
         }
         set {
-            let data = try? encoder.encode(bestGame)
+            let data = try? encoder.encode(newValue)
             userDefaults.set(data, forKey: Keys.bestGame.rawValue)
         }
     }
