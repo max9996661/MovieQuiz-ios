@@ -9,29 +9,57 @@ import UIKit
 
 final class MovieQuizPresenter {
     
-    internal var currentQuestion: QuizQuestion?
     private var currentQuestionIndex: Int = 0
+    internal var questionFactory: QuestionFactoryProtocol?
+    internal var currentQuestion: QuizQuestion?
     weak var viewController: MovieQuizViewController?
-    
+    internal var correctAnswers: Int = 0
     let questionsAmount: Int = 10
     
     
-     internal func yesButtonClicked() {
-        guard let currentQuestion = currentQuestion else {return}
-         
-        let givenAnswer = true
-         
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-         
-    }
-    
-     internal func noButtonClicked() {
+    private func didAnswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
         }
-        let givenAnswer = false
-         
-         viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        
+        let givenAnswer = isYes
+        
+        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    }
+    
+     internal func yesButtonClicked() {
+         didAnswer(isYes: true)
+    }
+    
+     internal func noButtonClicked() {
+         didAnswer(isYes: false)
+    }
+    
+    func didReceiveNextQuestion(question: QuizQuestion?) {
+        guard let question = question else {
+            return
+        }
+        
+        currentQuestion = question
+        let viewModel = convert(model: question)
+        DispatchQueue.main.async { [weak self] in
+            self?.viewController?.show(quiz: viewModel)
+        }
+    }
+    
+    internal func showNextQuestionOrResualts() {
+        if self.isLastQuestion() {
+            let text = "Вы ответили на \(correctAnswers) из 10, попробуйте ещё раз!"
+                        
+                        let viewModel = QuizResultsViewModel(
+                            title: "Этот раунд окончен!",
+                            text: text,
+                            buttonText: "Сыграть ещё раз")
+                            viewController?.showFinalResults(quiz: viewModel)
+        } else {
+            self.switchToNextQuestion()
+            questionFactory?.requestNextQuestion()
+        }
     }
     
     func isLastQuestion() -> Bool {
