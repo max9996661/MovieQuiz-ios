@@ -17,7 +17,8 @@ struct BestGame: Codable {
     var date: Date
     
 }
-
+// MARK: - Public properties
+/// Средняя точность правильных ответов в процентах
 extension BestGame : Comparable {
     private var accuracy: Double {
         guard total != 0 else {
