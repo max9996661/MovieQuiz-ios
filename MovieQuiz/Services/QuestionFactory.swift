@@ -64,9 +64,4 @@ class QustionFactory: QuestionFactoryProtocol {
              }
          }
     }
-    
-//    init(delegate: QuestionFactoryDelegate) {
-//        self.delegate = delegate
-//    }
-    
 }
