@@ -13,11 +13,21 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     
     private var alertPresenter: AlertPresenterProtocol?
     private var presenter: MovieQuizPresenter!
-    private var  statisticService : StatisticService?
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
+    
+    init(presenter: MovieQuizPresenter){
+        self.presenter = presenter
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+       super.init(coder: aDecoder)
+    }
+    
         
 // MARK: functions
     internal func show(quiz result: QuizStepViewModel) {
@@ -27,7 +37,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         counterLabel.text = result.questionNumber
     }
     
-    internal func showFinalResults(quiz result: QuizResultsViewModel) {
+     func showFinalResults(quiz result: QuizResultsViewModel) {
         let message = presenter.makeResultsMessage()
         
         let alert = UIAlertController(
@@ -46,7 +56,7 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         self.present(alert, animated: true, completion: nil)
     }
     
-    internal func highlightImageBorder(isCorrectAnswer: Bool) {
+     func highlightImageBorder(isCorrectAnswer: Bool) {
             imageView.layer.masksToBounds = true
             imageView.layer.borderWidth = 8
             imageView.layer.borderColor = isCorrectAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
@@ -63,16 +73,16 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
     }
 // MARK: Indicator Action
     
-    internal func showLoadingIndicator() {
+     func showLoadingIndicator() {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
     }
     
-    internal func hideLoadingIndicator() {
+     func hideLoadingIndicator() {
           activityIndicator.isHidden = true
       }
     
-    internal func showNetworkError(message: String) {
+     func showNetworkError(message: String) {
         hideLoadingIndicator()
         let alert = UIAlertController(
                 title: "Ошибка",

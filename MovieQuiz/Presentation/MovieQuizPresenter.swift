@@ -9,7 +9,7 @@ import UIKit
 
 final class MovieQuizPresenter: QuestionFactoryDelegate {
     
-    private let statisticService: StatisticService!
+    private let statisticService: StatisticService
     private var currentQuestionIndex: Int = 0
     private var questionFactory: QuestionFactoryProtocol?
     private weak var viewController: MovieQuizViewControllerProtocol?
