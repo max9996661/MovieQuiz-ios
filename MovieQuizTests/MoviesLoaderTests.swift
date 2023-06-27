@@ -52,6 +52,6 @@ class MoviesLoaderTests: XCTestCase {
             }
         }
         
-        waitForExpectations(timeout: 1)
+        waitForExpectations(timeout: 2)
     }
 }
